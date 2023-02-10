@@ -9,8 +9,6 @@
 
 #include <linux/input/mt.h>
 
-#define KTIME_RELEASE_ALL (ktime_set(0, 0))
-
 enum gti_cmd_type : u32{
 	GTI_CMD_NOP,
 };
@@ -79,12 +77,6 @@ static inline void goog_input_sync(struct goog_touch_interface *gti, struct inpu
 static inline int goog_input_process(struct goog_touch_interface *gti)
 {
 	return 0;
-}
-
-static inline void goog_notify_vendor_dev_pm_state_done(
-	struct goog_touch_interface *gti,
-	enum gti_vendor_dev_pm_state state)
-{
 }
 
 struct gti_optional_configuration {
