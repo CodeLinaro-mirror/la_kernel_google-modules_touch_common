@@ -2575,15 +2575,15 @@ int goog_offload_probe(struct goog_touch_interface *gti)
 	gti->offload.caps.continuous_reporting = true;
 	gti->offload.caps.noise_reporting = false;
 	gti->offload.caps.cancel_reporting =
-		of_property_read_bool(np, "goog,offload-caps-cancel-reporting");
+		!of_property_read_bool(np, "goog,offload-caps-cancel-reporting-disabled");
 	gti->offload.caps.size_reporting = true;
 	gti->offload.caps.filter_grip = true;
 	gti->offload.caps.filter_palm = true;
 	gti->offload.caps.coord_filter = gti->coord_filter_enabled &&
 		of_property_read_bool(np, "goog,offload-caps-coord-filter");
 	gti->offload.caps.num_sensitivity_settings = 1;
-	gti->offload.caps.rotation_reporting = of_property_read_bool(np,
-		"goog,offload-caps-rotation-reporting");
+	gti->offload.caps.rotation_reporting =
+		!of_property_read_bool(np, "goog,offload-caps-rotation-reporting-disabled");
 
 	gti->offload.hcallback = (void *)gti;
 	gti->offload.report_cb = goog_offload_input_report;
@@ -3235,6 +3235,8 @@ void goog_init_options(struct goog_touch_interface *gti,
 			gti->options.set_screen_protector_mode = options->set_screen_protector_mode;
 		if (options->set_sensing_mode)
 			gti->options.set_sensing_mode = options->set_sensing_mode;
+
+		gti->options.post_irq_thread_fn = options->post_irq_thread_fn;
 	}
 }
 
@@ -3762,7 +3764,7 @@ static irqreturn_t gti_irq_thread_fn(int irq, void *data)
 	 */
 	mutex_lock(&gti->input_process_lock);
 
-	if (gti->vendor_irq_thread_fn)
+	if (gti->vendor_irq_thread_fn != NULL)
 		ret = gti->vendor_irq_thread_fn(irq, gti->vendor_irq_cookie);
 	else
 		ret = IRQ_HANDLED;
@@ -3770,6 +3772,11 @@ static irqreturn_t gti_irq_thread_fn(int irq, void *data)
 	goog_input_process(gti, false);
 
 	mutex_unlock(&gti->input_process_lock);
+
+	if (ret == IRQ_HANDLED && gti->vendor_irq_thread_fn != NULL &&
+			gti->options.post_irq_thread_fn != NULL) {
+		ret = gti->options.post_irq_thread_fn(irq, gti->vendor_irq_cookie);
+	}
 
 	gti_debug_hc_update(gti, false);
 	cpu_latency_qos_update_request(&gti->pm_qos_req, PM_QOS_DEFAULT_VALUE);
