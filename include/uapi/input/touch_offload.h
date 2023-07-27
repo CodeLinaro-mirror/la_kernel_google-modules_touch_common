@@ -227,7 +227,10 @@ struct TouchOffloadData2d {
 	__u16 tx_size;
 	__u16 rx_size;
 	__u8 reserved1[16];
-	__u8 data[1];
+	union {
+		__u8 data;
+		__DECLARE_FLEX_ARRAY(__u8, data_flex);
+	};
 } __attribute__((packed));
 #define TOUCH_OFFLOAD_DATA_SIZE_2D(rx, tx) (sizeof(__u16)*(rx)*(tx))
 #define TOUCH_OFFLOAD_FRAME_SIZE_2D(rx, tx) \
@@ -246,7 +249,11 @@ struct TouchOffloadData1d {
 	__u16 tx_size;
 	__u16 rx_size;
 	__u8 reserved1[16];
-	__u8 data[1];
+	union {
+		__u8 data;
+		__DECLARE_FLEX_ARRAY(__u8, data_flex);
+	};
+
 } __attribute__((packed));
 #define TOUCH_OFFLOAD_DATA_SIZE_1D(rx, tx) (sizeof(__u16)*((rx)+(tx)))
 #define TOUCH_OFFLOAD_FRAME_SIZE_1D(rx, tx) \

@@ -1832,7 +1832,7 @@ void goog_offload_populate_mutual_channel(struct goog_touch_interface *gti,
 	mutual->header.channel_size =
 		TOUCH_OFFLOAD_FRAME_SIZE_2D(mutual->rx_size, mutual->tx_size);
 
-	memcpy(mutual->data, buffer, size);
+	memcpy(mutual->data_flex, buffer, size);
 }
 
 void goog_offload_populate_self_channel(struct goog_touch_interface *gti,
@@ -1852,7 +1852,7 @@ void goog_offload_populate_self_channel(struct goog_touch_interface *gti,
 	self->header.channel_size =
 		TOUCH_OFFLOAD_FRAME_SIZE_1D(self->rx_size, self->tx_size);
 
-	memcpy(self->data, buffer, size);
+	memcpy(self->data_flex, buffer, size);
 }
 
 static void goog_offload_populate_driver_status_channel(
