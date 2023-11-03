@@ -13,12 +13,11 @@ filegroup(
 )
 
 filegroup(
-    name = "touch.common.kconfig",
+    name = "common.kconfig",
     srcs = glob([
         "Kconfig",
     ]),
     visibility = [
-        "//private/devices/google:__subpackages__",
         "//private/google-modules/soc/gs:__pkg__",
     ],
 )
@@ -43,7 +42,6 @@ kernel_module(
     ],
     kernel_build = "//private/google-modules/soc/gs:gs_kernel_build",
     visibility = [
-        "//private/devices/google:__subpackages__",
         "//private/google-modules/soc/gs:__pkg__",
         "//private/google-modules/touch:__subpackages__",
     ],
