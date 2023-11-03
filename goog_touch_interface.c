@@ -12,10 +12,10 @@
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 #include <samsung/exynos_drm_connector.h>
+#include <trace/hooks/systrace.h>
 
 #include "goog_touch_interface.h"
 #include "touch_bus_negotiator.h"
-#include "../../../gs-google/drivers/soc/google/vh/kernel/systrace.h"
 
 static struct class *gti_class;
 static u8 gti_dev_num;
@@ -2124,7 +2124,7 @@ void goog_update_fw_settings(struct goog_touch_interface *gti)
 static void goog_offload_set_running(struct goog_touch_interface *gti, bool running)
 {
 	if (gti->offload.offload_running != running) {
-		GOOG_INFO(gti, "Set offload_running=%d, irq_index=%d, input_index=%d\n",
+		GOOG_INFO(gti, "Set offload_running=%d, irq_index=%llu, input_index=%llu\n",
 			running, gti->irq_index, gti->input_index);
 
 		gti->offload.offload_running = running;
