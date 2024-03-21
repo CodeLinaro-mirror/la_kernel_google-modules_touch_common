@@ -4,6 +4,9 @@ ccflags-y	+= -I$(srctree)/$(src)/include
 ccflags-y	+= -I$(srctree)/../private/google-modules/display
 ccflags-y	+= -I$(srctree)/../private/google-modules/display/include/uapi
 
+CFLAGS_goog_touch_interface.o += -Wno-missing-prototypes
+CFLAGS_touch_bus_negotiator.o += -Wno-missing-prototypes
+
 obj-$(CONFIG_TOUCHSCREEN_TBN)		+= touch_bus_negotiator.o
 obj-$(CONFIG_TOUCHSCREEN_HEATMAP)	+= heatmap.o
 obj-$(CONFIG_TOUCHSCREEN_OFFLOAD)	+= touch_offload.o
