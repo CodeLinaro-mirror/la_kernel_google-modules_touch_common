@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-2.0
 
-ccflags-y	+= -I$(srctree)/$(src)/include
+ccflags-y	+= -I$(src)/include
 ccflags-y	+= -I$(srctree)/../private/google-modules/display
 ccflags-y	+= -I$(srctree)/../private/google-modules/display/include/uapi
 
