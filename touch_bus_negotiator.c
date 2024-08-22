@@ -506,7 +506,7 @@ failed:
 	return err;
 }
 
-static int tbn_remove(struct platform_device *pdev)
+static void tbn_remove(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct tbn_context *tbn = dev_get_drvdata(dev);
@@ -522,7 +522,6 @@ static int tbn_remove(struct platform_device *pdev)
 		kthread_stop(tbn->aoc_channel_task);
 #endif
 	}
-	return 0;
 }
 
 static struct of_device_id tbn_of_match_table[] = {
