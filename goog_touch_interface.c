@@ -1440,6 +1440,7 @@ static int register_panel_bridge(struct goog_touch_interface *gti)
 #ifdef CONFIG_OF
 	gti->panel_bridge.of_node = gti->vendor_dev->of_node;
 #endif
+	INIT_LIST_HEAD(&gti->panel_bridge.list);
 	gti->panel_bridge.funcs = &panel_bridge_funcs;
 	drm_bridge_add(&gti->panel_bridge);
 
