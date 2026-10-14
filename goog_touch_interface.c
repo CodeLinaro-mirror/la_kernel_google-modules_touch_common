@@ -1332,7 +1332,8 @@ void gti_debug_input_dump(struct goog_touch_interface *gti)
 /*-----------------------------------------------------------------------------
  * DRM: functions and structures.
  */
-static void panel_bridge_enable(struct drm_bridge *bridge)
+static void panel_bridge_enable(struct drm_bridge *bridge,
+				struct drm_atomic_commit *commit)
 {
 	struct goog_touch_interface *gti =
 		container_of(bridge, struct goog_touch_interface, panel_bridge);
@@ -1345,7 +1346,8 @@ static void panel_bridge_enable(struct drm_bridge *bridge)
 	goog_set_display_state(gti, GTI_DISPLAY_STATE_ON);
 }
 
-static void panel_bridge_disable(struct drm_bridge *bridge)
+static void panel_bridge_disable(struct drm_bridge *bridge,
+				 struct drm_atomic_commit *commit)
 {
 	struct goog_touch_interface *gti =
 		container_of(bridge, struct goog_touch_interface, panel_bridge);
@@ -1429,8 +1431,11 @@ static void panel_bridge_mode_set(struct drm_bridge *bridge,
 }
 
 static const struct drm_bridge_funcs panel_bridge_funcs = {
-	.enable = panel_bridge_enable,
-	.disable = panel_bridge_disable,
+	.atomic_create_state = drm_atomic_helper_bridge_create_state,
+	.atomic_destroy_state = drm_atomic_helper_bridge_destroy_state,
+	.atomic_duplicate_state = drm_atomic_helper_bridge_duplicate_state,
+	.atomic_enable = panel_bridge_enable,
+	.atomic_disable = panel_bridge_disable,
 	.mode_set = panel_bridge_mode_set,
 };
 

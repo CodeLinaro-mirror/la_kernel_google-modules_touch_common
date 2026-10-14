@@ -9,6 +9,7 @@
 #define _GOOG_TOUCH_INTERFACE_
 
 #include <drm/drm_panel.h>
+#include <drm/drm_atomic_state_helper.h>
 #include <drm/drm_bridge.h>
 #include <drm/drm_connector.h>
 #include <linux/kfifo.h>
